@@ -4,6 +4,7 @@ import tkinter as tk
 class Memory:
     def __init__(self):
         self.window = tk.Tk()
+        # self.window.geometry("600x700")
 
         self.window.title("Memory Training")
         
@@ -19,6 +20,8 @@ class Memory:
         self.matrix_label.pack()
 
     def generate_matrix(self, size):
+        
+        # Generate the matrix
         matrix = [[random.randint(1, 23) for _ in range(size)] for _ in range(size)]
 
         # Create matrix components
@@ -26,17 +29,17 @@ class Memory:
         for row in matrix:
             for number in row:
                 label = tk.Label(self.matrix_label, text=str(number))
+                label.config(background="black", font=("Arial", 30), width=4, height=4, relief="raised", anchor="center")
+                label.config(borderwidth=2, highlightthickness=2, highlightcolor="black")
                 self.labels.append(label)
 
-        #Palace the components of the matrix in the cells
+        # Place the components of the matrix in the cells
         for row in range(size):
             for column in range(size):
                 self.labels[row * size + column].grid(row=row, column=column)
 
-        #Conf matrix components
-        for label in self.labels:
-            label.config(background="black", width=9, height=9, relief="raised")
-            label.config(borderwidth=2, highlightthickness=2, highlightcolor="black")
+        # Set the size of the window
+        self.window.geometry(f"{size * 150}x{size * 180}")
 
     def mainloop(self):
         self.window.mainloop()
