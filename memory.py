@@ -1,30 +1,23 @@
 import random
 
-
-
 class Memory:
     def generate_random_matrix(self, size):
-        # Генерує рандомну матрицю розміром size
+        #Generates a random matrix of size
         return [[random.randint(1, 9) for _ in range(size)] for _ in range(size)]
 
 
     def print_matrix(self, matrix):
-        # Виводить матрицю в термінал
+        #Outputs the matrix to the terminal
         for row in matrix:
             print(" ".join(str(n) for n in row))
 
 
 def main():
-    # Створюємо об'єкт класу Memory
     memory = Memory()
 
-    # Запитуємо розмір матриці у користувача
+    #Ask the size of the matrix from the user
     size = int(input("Введіть розмір матриці: "))
-
-    # Генеруємо матрицю
     matrix = memory.generate_random_matrix(size)
-
-    # Виводимо матрицю
     memory.print_matrix(matrix)
 
 
