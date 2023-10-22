@@ -1,28 +1,33 @@
 import random
+import tkinter as tk
 
 class Memory:
-    def generate_random_matrix(self, size):
-        #Generates a random matrix of size
-        return [[random.randint(1, 9) for _ in range(size)] for _ in range(size)]
+    def __init__(self):
+        self.window = tk.Tk()
+
+        self.window.title("Memory Training")
+        
+        #Field for entering the size of the matrix
+        self.size_entry = tk.Entry(self.window)
+        self.size_entry.pack()
+
+        self.generate_button = tk.Button(self.window, text="Generate", command=lambda: self.generate_matrix(int(self.size_entry.get())))
+        self.generate_button.pack()
 
 
-    def print_matrix(self, matrix):
-        #Outputs the matrix to the terminal
-        for row in matrix:
-            print(" ".join(str(n) for n in row))
+        self.matrix_label = tk.Label(self.window)
+        self.matrix_label.pack()
 
+    def generate_matrix(self, size):
+        matrix = [[random.randint(1, 23) for _ in range(size)] for _ in range(size)]
 
-def main():
-    memory = Memory()
+        self.matrix_label.config(text="\n".join([" ".join([str(n) for n in row]) for row in matrix]))
 
-    #Ask the size of the matrix from the user
-    size = int(input("Введіть розмір матриці: "))
-    matrix = memory.generate_random_matrix(size)
-    memory.print_matrix(matrix)
+    def mainloop(self):
+        self.window.mainloop()
 
 
 if __name__ == "__main__":
-    main()
+    memory = Memory()
 
-
-
+    memory.mainloop()
