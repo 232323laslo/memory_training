@@ -21,7 +21,22 @@ class Memory:
     def generate_matrix(self, size):
         matrix = [[random.randint(1, 23) for _ in range(size)] for _ in range(size)]
 
-        self.matrix_label.config(text="\n".join([" ".join([str(n) for n in row]) for row in matrix]))
+        # Create matrix components
+        self.labels = []
+        for row in matrix:
+            for number in row:
+                label = tk.Label(self.matrix_label, text=str(number))
+                self.labels.append(label)
+
+        #Palace the components of the matrix in the cells
+        for row in range(size):
+            for column in range(size):
+                self.labels[row * size + column].grid(row=row, column=column)
+
+        #Conf matrix components
+        for label in self.labels:
+            label.config(background="black", width=9, height=9, relief="raised")
+            label.config(borderwidth=2, highlightthickness=2, highlightcolor="black")
 
     def mainloop(self):
         self.window.mainloop()
