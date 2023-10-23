@@ -25,7 +25,7 @@ class Memory:
         self.timer_label.pack(side="top")
 
         # Список всіх label'ів з матриці
-        self.matrix_labels = []
+        self.numbers = []
 
     def generate_matrix(self, size, change_label=False):
         #Generate the matrix
@@ -57,25 +57,43 @@ class Memory:
         if change_label:
             self.label.config(text="Remember as much as possible!")
 
-        #Start the timer
-        self.timer_count = 300
+       # Start the timer
+        self.timer_count = 2
         self.update_timer()
 
+        # Add all numbers to the numbers list
+        for row in matrix:
+            for number in row:
+                self.numbers.append(number)
+
     def update_timer(self):
-        #Decrement the timer count
+        # Decrement the timer count
         self.timer_count -= 1
 
-        #Update the timer label
+        # Update the timer label
         self.timer_label.config(text=f"{self.timer_count // 60:02d}:{self.timer_count % 60:02d}")
 
-        #If the timer has expired, end the game
+        # If the timer has expired, end the game
         if self.timer_count == 0:
+            # Stop the timer before returning
+            self.window.after_cancel(self.timer_update_id)
+
+            # End the game
             self.end_game()
 
-        #Schedule the next timer update
-        self.window.after(5, self.update_timer)
+            # Return control to the main loop
+            return
 
-    
+        # Schedule the next timer update
+        self.timer_update_id = self.window.after(1000, self.update_timer)
+
+        return
+
+    def end_game(self):
+        # Print all the numbers
+        for number in self.numbers:
+            print(number)
+
 
     def mainloop(self):
         self.window.mainloop()
