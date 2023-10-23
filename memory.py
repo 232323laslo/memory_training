@@ -6,25 +6,28 @@ class Memory:
         self.window = tk.Tk()
         self.window.geometry("600x700")
         self.window.title("Memory Training")
-        
-        #Field for entering the size of the matrix
-        self.size_entry = tk.Entry(self.window)
-        self.size_entry.pack()
+        self.label = tk.Label(self.window, text="Use your brains, use your memory!", font=("Arial", 18))
+        self.label.pack(padx=20, pady=20)
 
-        #Generate button
-        self.generate_button = tk.Button(self.window, text="Generate", command=lambda: self.generate_matrix(int(self.size_entry.get())))
-        self.generate_button.pack()
-
+        # Додаємо кнопки
+        self.button_easy = tk.Button(self.window, text="Easy", command=lambda: self.generate_matrix(2, change_label=True)) 
+        self.button_easy.pack()
+        self.button_normal = tk.Button(self.window, text="Normal", command=lambda: self.generate_matrix(4, change_label=True)) 
+        self.button_normal.pack()
+        self.button_hard = tk.Button(self.window, text="Hard", command=lambda: self.generate_matrix(6, change_label=True)) 
+        self.button_hard.pack()
 
         self.matrix_label = tk.Label(self.window)
         self.matrix_label.pack()
-
 
         # Label for the timer
         self.timer_label = tk.Label(self.window, text="05:00", font=("Arial", 20))
         self.timer_label.pack(side="top")
 
-    def generate_matrix(self, size):
+        # Список всіх label'ів з матриці
+        self.matrix_labels = []
+
+    def generate_matrix(self, size, change_label=False):
         #Generate the matrix
         matrix = [[random.randint(1, 23) for _ in range(size)] for _ in range(size)]
 
@@ -43,7 +46,16 @@ class Memory:
                 self.labels[row * size + column].grid(row=row, column=column)
 
         #Set the size of the window
-        self.window.geometry(f"{size * 150}x{size * 180}")
+        self.window.geometry(f"{size * 160}x{size * 200}")
+
+        #Прибираємо кнопки
+        self.button_easy.destroy()
+        self.button_normal.destroy()
+        self.button_hard.destroy()
+        
+        # Змінюємо текст label, якщо це необхідно
+        if change_label:
+            self.label.config(text="Remember as much as possible!")
 
         #Start the timer
         self.timer_count = 300
@@ -61,7 +73,9 @@ class Memory:
             self.end_game()
 
         #Schedule the next timer update
-        self.window.after(1000, self.update_timer)
+        self.window.after(5, self.update_timer)
+
+    
 
     def mainloop(self):
         self.window.mainloop()
