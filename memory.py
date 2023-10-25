@@ -1,9 +1,7 @@
 import random
 import tkinter as tk
 
-class Memory_game:
-    
-    
+class Memory_game:  
     def __init__(self):
         #Saved numbers who need to remember
         self.numbers = []
@@ -30,6 +28,7 @@ class Memory_game:
         #Label for the timer at the main screen
         self.timer_label = tk.Label(self.window, text="05:00", font=("Arial", 20))
         self.timer_label.pack(side="top")
+
 
     def generate_first_matrix(self, size, change_label=False):
         #Generate the random numbers in matrix
@@ -70,7 +69,7 @@ class Memory_game:
         for row in matrix:
             for number in row:
                 self.numbers.append(number)
-
+                
     def update_timer(self):
         #Decrement the timer count
         self.timer_count -= 1
@@ -105,43 +104,18 @@ class Memory_game:
                 label = tk.Label(self.matrix_label)
                 label.config(background="black", font=("Arial", 30), width=4, height=4, relief="raised", anchor="center")
                 label.config(borderwidth=2, highlightthickness=2, highlightcolor="black")
-                self.labels.append(label)
+                self.labels.append(label)   
 
         #Place the components (blocks)of the matrix in the cells
         for row in range(self.size):
             for column in range(self.size):
-                self.labels[row * self.size + column].grid(row=row, column=column)
+                self.labels[row * self.size + column].grid(row=row, column=column)  
 
-        #Прив'язуємо подію кліку до кожного квадрата
         for label in self.labels:
             label.bind("<Button-1>", self.on_click)
 
     def on_click(self, event):
-        # Get the coordinates of the clicked square
-        row = event.y // 40
-        column = event.x // 40
-
-        # Check if the coordinates are within the bounds of the matrix
-        if row < 0 or row >= self.size or column < 0 or column >= self.size:
-            return
-
-        # Get the label at the clicked coordinates
-        label = self.labels[row * self.size + column]
-
-        # Enable text input on the label
-        label.config(state="normal")
-        label.config(validate="key", validatecommand=(label.register(self.validate_entry), "%P"))
-
-        # Set the focus on the label
-        label.focus_set()
-
-    def validate_entry(self, text):
-        try:
-            int(text)
-            return True
-        except ValueError:
-            return False
-
+        print("Mouse coordinates: " + str(event.x) + "," + str(event.y))
 
     def mainloop(self):
         #Start the main loop
