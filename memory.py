@@ -29,7 +29,6 @@ class Memory_game:
         self.timer_label = tk.Label(self.window, text="05:00", font=("Arial", 20))
         self.timer_label.pack(side="top")
 
-
     def generate_first_matrix(self, size, change_label=False):
         #Generate the random numbers in matrix
         self.size = size
@@ -50,7 +49,7 @@ class Memory_game:
                 self.labels[row * size + column].grid(row=row, column=column)
 
         #Sets the size of the window depending on the size of the matrix 
-        self.window.geometry(f"{size * 160}x{size * 200}")
+        self.window.geometry(f"{size * 160}x{size * 230}")
 
         #Removed buttons after user choose level
         self.button_easy.destroy()
@@ -111,15 +110,57 @@ class Memory_game:
             for column in range(self.size):
                 self.labels[row * self.size + column].grid(row=row, column=column)  
 
-        for label in self.labels:
-            label.bind("<Button-1>", self.on_click)
+        button_check_answers = tk.Button(self.window, text="Check Answers", command=self.on_click)
+        button_check_answers.pack(padx=2, pady=2)
 
-    def on_click(self, event):
-        print("Mouse coordinates: " + str(event.x) + "," + str(event.y))
+        for label in self.labels:
+            label.bind("<Button-1>", lambda event: self.on_click(event))
+            
+
+    def on_click(self, event=None):
+        if event is None:
+            return
+        clicked_label = event.widget
+        # Get the width of the label
+        label_size = clicked_label.winfo_width()
+        # Create a text entry widget
+        text_entry = tk.Entry(clicked_label)
+        # Set the text entry widget's width to 4 characters
+        text_entry.config(width=4)
+        # Set the text entry widget's position
+        text_entry.place(x=label_size / 6.5 - text_entry.winfo_width() / 2, y=label_size / 1.5 - text_entry.winfo_height() / 2)
+        # Get the user's input
+        new_number = text_entry.get()
+        # If the user enters a valid number, set the label's text to the new number
+        if new_number.isdigit() and 0 <= int(new_number) <= 23:
+            clicked_label.config(text=new_number)
+            if all([label.config() for label in self.labels]):
+                # Compare the user's input to the correct answers
+                correct_answers = self.numbers
+                user_answers = [int(label.config()[0]) for label in self.labels]
+                correct_count = 0
+                for i in range(len(correct_answers)):
+                    if user_answers[i] == correct_answers[i]:
+                        correct_count += 1
+                percentage_correct = correct_count / len(correct_answers) * 100
+
+                # Print the percentage of correct answers to the console
+                print("You got {}% correct!".format(percentage_correct))
+
+
+
+
+
+
+
+
+
+
 
     def mainloop(self):
         #Start the main loop
         self.window.mainloop()
+        
 
 if __name__ == "__main__":
     memory = Memory_game()
